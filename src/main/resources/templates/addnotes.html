@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${editMode} ? 'Edit Note' : 'Create Note'">Add Note</title>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef2ff;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #1d4ed8;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            margin-top: 18px;
+            color: #374151;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 180px;
+        }
+
+        .error {
+            color: #dc2626;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <h1 th:text="${editMode} ? 'Edit Note' : 'Create New Note'"></h1>
+
+    <form th:action="${editMode} ? @{/notes/update/{id}(id=${note.id})} : @{/notes/save}"
+          th:object="${note}"
+          method="post">
+
+        <label for="title">Title</label>
+        <input type="text" id="title" th:field="*{title}" placeholder="Enter note title">
+        <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+
+        <label for="content">Content</label>
+        <textarea id="content" th:field="*{content}" placeholder="Write your note here..."></textarea>
+        <div class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+
+        <div class="btn-row">
+            <button type="submit" class="btn btn-primary"
+                    th:text="${editMode} ? 'Update Note' : 'Save Note'"></button>
+
+            <a th:href="@{/notes}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
